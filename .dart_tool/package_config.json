@@ -45,7 +45,7 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///Users/whitehat/fvm/versions/stable/packages/flutter",
+      "rootUri": "file:///Users/whitehat/fvm/versions/3.38.5/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -57,7 +57,7 @@
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///Users/whitehat/fvm/versions/stable/packages/flutter_test",
+      "rootUri": "file:///Users/whitehat/fvm/versions/3.38.5/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -111,7 +111,7 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///Users/whitehat/fvm/versions/stable/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///Users/whitehat/fvm/versions/3.38.5/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.8"
     },
@@ -172,7 +172,7 @@
   ],
   "generator": "pub",
   "generatorVersion": "3.10.4",
-  "flutterRoot": "file:///Users/whitehat/fvm/versions/stable",
+  "flutterRoot": "file:///Users/whitehat/fvm/versions/3.38.5",
   "flutterVersion": "3.38.5",
   "pubCache": "file:///Users/whitehat/.pub-cache"
 }
