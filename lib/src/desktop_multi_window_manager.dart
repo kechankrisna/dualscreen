@@ -56,7 +56,11 @@ class DesktopMultiWindowManager extends MultiWindowManager {
   }) async {
     _windowCount++;
     final controller = await DesktopMultiWindow.createWindow(
-      jsonEncode({...argument, 'windowNumber': _windowCount}),
+      jsonEncode({
+        ...argument,
+        'windowNumber': _windowCount,
+        if (size.isFullScreen) '__autoMaximize': true,
+      }),
     );
     await controller.setFrame(size.resolveFrame());
     await controller.setTitle('Sub Window $_windowCount');

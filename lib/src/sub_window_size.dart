@@ -48,12 +48,21 @@ sealed class SubWindowSize {
   /// Resolves this spec into a concrete [Rect] in global screen coordinates
   /// (logical pixels).
   Rect resolveFrame();
+
+  /// Whether this size spec represents a full-screen window.
+  ///
+  /// Used internally to decide whether to auto-maximize the sub-window after
+  /// it opens. Only `SubWindowSize.fullScreen()` returns `true`.
+  bool get isFullScreen => false;
 }
 
 // ── Private variants ──────────────────────────────────────────────────────────
 
 final class _FullScreen extends SubWindowSize {
   const _FullScreen();
+
+  @override
+  bool get isFullScreen => true;
 
   @override
   Rect resolveFrame() {
