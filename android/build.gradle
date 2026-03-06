@@ -1,12 +1,12 @@
-group 'app.mylekha.package.extend_screen'
+group 'app.mylekha.extend_screen'
 version '1.0'
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
-    namespace 'app.mylekha.package.extend_screen'
-    compileSdk 34
+    namespace 'app.mylekha.extend_screen'
+    compileSdk 35
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -27,5 +27,5 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // kotlin-stdlib is added automatically by the kotlin-android plugin (Kotlin 1.4+)
 }

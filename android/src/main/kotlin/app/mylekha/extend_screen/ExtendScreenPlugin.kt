@@ -1,4 +1,4 @@
-package app.mylekha.package.extend_screen
+package app.mylekha.extend_screen
 
 import android.app.Presentation
 import android.content.Context

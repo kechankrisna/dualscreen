@@ -24,5 +24,5 @@ flutter:
   plugin:
     platforms:
       android:
-        package: app.mylekha.package.extend_screen
+        package: app.mylekha.extend_screen
         pluginClass: ExtendScreenPlugin
