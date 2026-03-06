@@ -33,3 +33,4 @@ library dualscreen;
 
 export 'src/multi_window_manager.dart';
 export 'src/sub_display_state.dart';
+export 'src/sub_window_size.dart';

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'dart:io' show Platform;
 
 import 'sub_display_state.dart';
+import 'sub_window_size.dart';
 import 'desktop_multi_window_manager.dart';
 import 'android_second_display_manager.dart';
 import 'unsupported_multi_window_manager.dart';
@@ -49,7 +50,14 @@ abstract class MultiWindowManager {
   /// [argument] is serialised to JSON and passed to the sub-window's Flutter
   /// engine via the `desktop_multi_window` package. The sub-window receives
   /// it as `args[2]` in `main(List<String> args)`.
-  Future<void> openSubWindow(Map<String, dynamic> argument);
+  ///
+  /// [size] controls the initial frame of the new window. Defaults to
+  /// [SubWindowSize.fullScreen], which fills the secondary display (or the
+  /// primary display when only one is detected).
+  Future<void> openSubWindow(
+    Map<String, dynamic> argument, {
+    SubWindowSize size = const SubWindowSize.fullScreen(),
+  });
 
   /// Sends a [SubDisplayState] snapshot to the secondary display (Android only).
   ///

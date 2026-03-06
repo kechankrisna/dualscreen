@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 
 import 'multi_window_manager.dart';
 import 'sub_display_state.dart';
+import 'sub_window_size.dart';
 
 /// Android implementation.
 ///
@@ -23,7 +24,10 @@ class AndroidSecondDisplayManager extends MultiWindowManager {
 
   /// No-op on Android — programmatic sub-windows are desktop-only.
   @override
-  Future<void> openSubWindow(Map<String, dynamic> argument) async {}
+  Future<void> openSubWindow(
+    Map<String, dynamic> argument, {
+    SubWindowSize size = const SubWindowSize.fullScreen(),
+  }) async {}
 
   /// Sends a full state snapshot to the secondary display in a single call.
   ///

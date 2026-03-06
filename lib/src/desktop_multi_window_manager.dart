@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:desktop_multi_window/desktop_multi_window.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 
 import 'multi_window_manager.dart';
 import 'sub_display_state.dart';
+import 'sub_window_size.dart';
 
 /// Desktop implementation (Windows, macOS, Linux).
 ///
@@ -50,12 +50,15 @@ class DesktopMultiWindowManager extends MultiWindowManager {
   Future<bool> isSupported() async => true;
 
   @override
-  Future<void> openSubWindow(Map<String, dynamic> argument) async {
+  Future<void> openSubWindow(
+    Map<String, dynamic> argument, {
+    SubWindowSize size = const SubWindowSize.fullScreen(),
+  }) async {
     _windowCount++;
     final controller = await DesktopMultiWindow.createWindow(
       jsonEncode({...argument, 'windowNumber': _windowCount}),
     );
-    await controller.setFrame(const Rect.fromLTWH(200, 200, 480, 640));
+    await controller.setFrame(size.resolveFrame());
     await controller.setTitle('Sub Window $_windowCount');
     await controller.show();
     _controllers.add(controller);

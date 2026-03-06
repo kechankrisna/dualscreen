@@ -1,5 +1,6 @@
 import 'multi_window_manager.dart';
 import 'sub_display_state.dart';
+import 'sub_window_size.dart';
 
 /// Fallback implementation for platforms that do not support multi-window
 /// or secondary displays (iOS, Web).
@@ -11,7 +12,10 @@ class UnsupportedMultiWindowManager extends MultiWindowManager {
   Future<bool> isSupported() async => false;
 
   @override
-  Future<void> openSubWindow(Map<String, dynamic> argument) async {}
+  Future<void> openSubWindow(
+    Map<String, dynamic> argument, {
+    SubWindowSize size = const SubWindowSize.fullScreen(),
+  }) async {}
 
   @override
   Future<void> sendStateToSubDisplay(SubDisplayState state) async {}
