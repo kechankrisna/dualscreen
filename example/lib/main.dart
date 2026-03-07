@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:extend_screen/extend_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -17,22 +18,27 @@ import 'sub_window.dart';
 void main(List<String> args) async {
   
   WidgetsFlutterBinding.ensureInitialized();
-  if(Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
-    await windowManager.ensureInitialized();
-  }
-  
+
   if (args.firstOrNull == 'multi_window') {
+    // Sub-window engine: do NOT initialize window_manager here.
+    // window_manager tracks the main application window (window 0). Calling
+    // ensureInitialized() inside a sub-window engine retains a reference to
+    // that engine, which prevents FlutterViewController.engine.shutDownEngine()
+    // from being called when the sub-window is closed — leaving a zombie isolate.
     final windowId = int.parse(args[1]);
     final argument = args.length > 2 && args[2].isNotEmpty
         ? jsonDecode(args[2]) as Map<String, dynamic>
         : <String, dynamic>{};
-    if (argument['__autoMaximize'] == true) {
-      windowManager.waitUntilReadyToShow(null, () async {
-        await windowManager.setFullScreen(true);
-      });
-    }
+    // Tell the manager this process is a sub-window so stale-window cleanup
+    // is skipped — otherwise every sub-window would close its siblings.
+    MultiWindowManager.configureAsSubWindow();
     runApp(SubWindowApp(windowId: windowId, argument: argument));
     return;
+  }
+
+  // Main window only: initialize window_manager.
+  if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+    await windowManager.ensureInitialized();
   }
   runApp(const MainApp());
 }

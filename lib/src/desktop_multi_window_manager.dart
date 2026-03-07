@@ -22,9 +22,14 @@ class DesktopMultiWindowManager extends MultiWindowManager {
 
   /// Creates the manager and, in debug builds, closes any sub-windows that
   /// survived a hot restart so the developer always starts from a clean state.
-  static Future<DesktopMultiWindowManager> create() async {
+  ///
+  /// [isSubWindow] must be `true` when this process is itself a sub-window
+  /// (set automatically via [MultiWindowManager.configureAsSubWindow]).
+  /// Stale-window cleanup is skipped for sub-window processes to prevent
+  /// them from inadvertently closing sibling windows.
+  static Future<DesktopMultiWindowManager> create({bool isSubWindow = false}) async {
     final manager = DesktopMultiWindowManager._();
-    if (kDebugMode) {
+    if (kDebugMode && !isSubWindow) {
       await manager._closeStaleWindows();
     }
     return manager;
@@ -63,12 +68,16 @@ class DesktopMultiWindowManager extends MultiWindowManager {
       jsonEncode({
         ...argument,
         'windowNumber': _windowCount,
+        // Tells the sub-window engine to enter macOS fullscreen after first frame.
+        // macOS fullscreen hides the menu bar and dock — more reliable than
+        // setFrame alone, which leaves the menu bar overlapping the window.
         if (size.isFullScreen) '__autoMaximize': true,
       }),
     );
     await controller.setFrame(size.resolveFrame());
     await controller.setTitle('Sub Window $_windowCount');
     await controller.show();
+    
     _controllers.add(controller);
   }
 

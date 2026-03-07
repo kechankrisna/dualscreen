@@ -27,7 +27,10 @@ class SubWindowApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
         useMaterial3: true,
       ),
-      home: SubWindowPage(windowNumber: windowNumber),
+      home: SubWindowPage(
+        windowNumber: windowNumber,
+        autoMaximize: argument['__autoMaximize'] == true,
+      ),
     );
   }
 }
@@ -36,9 +39,15 @@ class SubWindowPage extends StatefulWidget {
   const SubWindowPage({
     super.key,
     required this.windowNumber,
+    this.autoMaximize = false,
   });
 
   final int windowNumber;
+
+  /// When `true` the window will enter macOS/Windows fullscreen mode after the
+  /// first frame. Set by [SubWindowApp] when `'__autoMaximize'` is in the
+  /// launch argument (i.e. the window was opened with [SubWindowSize.fullScreen]).
+  final bool autoMaximize;
 
   @override
   State<SubWindowPage> createState() => _SubWindowPageState();
@@ -55,7 +64,7 @@ class _SubWindowPageState extends State<SubWindowPage> {
     super.initState();
     MultiWindowManager.instance().then((manager) {
       _subscription = manager.receiveStateFromMainDisplay().listen((state) {
-        log(  'Window ${widget.windowNumber} received state from main display: $state');
+        log('Window ${widget.windowNumber} received state from main display: $state');
         if (mounted) setState(() => _receivedState = state);
       });
     });

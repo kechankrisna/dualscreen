@@ -22,6 +22,17 @@ abstract class MultiWindowManager {
   // Singleton — resolved once and cached so the platform is never queried twice.
   static MultiWindowManager? _instance;
 
+  // Set to true by [configureAsSubWindow] when running inside a sub-window
+  // process. Prevents stale-window cleanup from running inside sub-windows.
+  static bool _isSubWindow = false;
+
+  /// Call this in `main()` before the first [instance()] call when this
+  /// process is a sub-window (i.e. `args.firstOrNull == 'multi_window'`).
+  ///
+  /// Without this, [DesktopMultiWindowManager] would run stale-window cleanup
+  /// inside every sub-window process and inadvertently close sibling windows.
+  static void configureAsSubWindow() => _isSubWindow = true;
+
   static Future<MultiWindowManager> instance() async {
     _instance ??= await _create();
     return _instance!;
@@ -31,7 +42,7 @@ abstract class MultiWindowManager {
     if (kIsWeb) return UnsupportedMultiWindowManager();
     if (Platform.isAndroid) return AndroidSecondDisplayManager();
     if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-      return DesktopMultiWindowManager.create();
+      return DesktopMultiWindowManager.create(isSubWindow: _isSubWindow);
     }
     return UnsupportedMultiWindowManager(); // iOS and any future platforms
   }
